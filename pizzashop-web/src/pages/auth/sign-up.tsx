@@ -8,43 +8,45 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-const signInForm = z.object({
+const signUpForm = z.object({
   email: z.string().email()
 })
 
-type SignInForm = z.infer<typeof signInForm>
+type SignUpForm = z.infer<typeof signUpForm>
 
-export function SignIn() {
+export function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignInForm>({
-    resolver: zodResolver(signInForm),
+    formState: {
+      isSubmitting
+    }
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpForm)
   })
 
 
-  async function handleSignIn(data: SignInForm) {
+  async function handleSignUp(data: SignUpForm) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000))
       toast.success('Enviamos um link de autenticação para seu email.', {
         action: {
           label: 'Reenviar',
-          onClick: () => handleSignIn(data)
+          onClick: () => handleSignUp(data)
         }
       })
     } catch (e) {
       toast.error('Não foi possível enviar o link para seu email.', {
         action: {
           label: 'Reenviar',
-          onClick: () => handleSignIn(data)
+          onClick: () => handleSignUp(data)
         }
       })
     }
   }
   return (
     <>
-      <Helmet title="Sign In" />
+      <Helmet title="Sign Up" />
       <div className='p-8'>
         <div className='w-[350px] flex flex-col justify-center gap-6'>
           <div className='flex flex-col gap-2 text-center'>
@@ -58,7 +60,7 @@ export function SignIn() {
 
           <form
             className='space-y-4'
-            onSubmit={handleSubmit(handleSignIn)}
+            onSubmit={handleSubmit(handleSignUp)}
           >
             <div className='space-y-2'>
               <Label htmlFor='email'>
